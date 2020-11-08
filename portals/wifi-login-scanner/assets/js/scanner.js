@@ -25,7 +25,7 @@ $(function () {
     });
   }
 
-  function submitConfig(e) {
+  function submitConfig(e, targetSSID) {
     // TODO: Replace these alerts with a modal
     if (!selectedNetwork) {
       e.preventDefault();
@@ -38,9 +38,9 @@ $(function () {
       return window.alert('You must enter a password');
     }
 
-    const selectedSSID = $('.is-active');
-    if (targetSSID !== selectedSSID.text()) {
+    if (targetSSID !== selectedSSID) {
       e.preventDefault();
+      $password.val('');
       return window.alert('Incorrect password');
     }
   }
@@ -100,6 +100,7 @@ $(function () {
           el.addClass('is-active');
 
           selectedNetwork = network;
+          selectedSSID = el.text();
 
           // If the network doesn't require auth then hide the field
           const passwordFieldGroup = $('.field');
@@ -121,24 +122,25 @@ $(function () {
     list.removeClass('is-hidden');
   }
 
-  function loadData() {
+  function loadData(targetSSID) {
     // LOAD DATA
-    const ip = $('#ip').val();
-    getSSID(ip).then((ssid) => {
-      const networks = getNetworks(JSON.parse(ssid.result));
-      // LINK TO GUI
-      networks.then(renderList);
-    });
+    const networks = getNetworks(targetSSID);
+    // LINK TO GU
+    networks.then(renderList);
   }
 
-  loadData();
+  const ip = $('#ip').val();
+  getSSID(ip).then((data) => {
+    const targetSSID = JSON.parse(data.result);
+    loadData(targetSSID);
 
-  $('#rescan-btn').click(() => {
-    // Reload data
-    loadData();
-  });
+    $('#rescan-btn').click(() => {
+      // Reload data
+      loadData(targetSSID);
+    });
 
-  $('#submit-btn').click((e) => {
-    submitConfig(e);
+    $('#submit-btn').click((e) => {
+      submitConfig(e, targetSSID);
+    });
   });
 });
