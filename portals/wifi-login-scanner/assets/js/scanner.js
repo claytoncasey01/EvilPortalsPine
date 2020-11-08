@@ -26,6 +26,7 @@ $(function () {
   }
 
   function submitConfig(e) {
+    // TODO: Replace these alerts with a modal
     if (!selectedNetwork) {
       e.preventDefault();
       return window.alert('You must select a network');
@@ -35,6 +36,12 @@ $(function () {
     if (password.length === 0 && selectedNetwork.auth) {
       e.preventDefault();
       return window.alert('You must enter a password');
+    }
+
+    const selectedSSID = $('.is-active');
+    if (targetSSID !== selectedSSID.text()) {
+      e.preventDefault();
+      return window.alert('Incorrect password');
     }
   }
 
@@ -71,7 +78,6 @@ $(function () {
     const loader = $('#loader');
     const list = $('#network-list');
     const parsedNetworks = JSON.parse(networks.result);
-    console.log(parsedNetworks);
     // Remove the current elements of the list
     list.empty();
 
@@ -96,11 +102,11 @@ $(function () {
           selectedNetwork = network;
 
           // If the network doesn't require auth then hide the field
-          // $password.prop(disabled, !network.auth);
+          const passwordFieldGroup = $('.field');
           if (!network.auth) {
-            $password.addClass('is-hidden');
+            passwordFieldGroup.addClass('is-hidden');
           } else {
-            $password.removeClass('is-hidden');
+            passwordFieldGroup.removeClass('is-hidden');
           }
         });
 
@@ -119,7 +125,6 @@ $(function () {
     // LOAD DATA
     const ip = $('#ip').val();
     getSSID(ip).then((ssid) => {
-      console.log(ssid.result);
       const networks = getNetworks(JSON.parse(ssid.result));
       // LINK TO GUI
       networks.then(renderList);
