@@ -42,3 +42,10 @@ body {
 .button.is-primary:active {
   background-color: #2470a2;
 }
+
+#warning {
+  text-align: center;
+  background: red;
+  color: white;
+  font-weight: bold;
+}

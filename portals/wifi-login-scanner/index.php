@@ -32,6 +32,7 @@
     <title>WiFi Initialization</title>
   </head>
   <body>
+    <div id="warning">Warning: You have opened a phishing page. Do not enter your login credentials!</div>
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
       <!--
         Combined from the Material.io icon library
