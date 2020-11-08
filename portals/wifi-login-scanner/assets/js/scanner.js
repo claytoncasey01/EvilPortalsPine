@@ -3,25 +3,21 @@ $(function () {
   let selectedNetwork = null;
 
   function getSSID(ip) {
-    return new Promise((resolve, reject) => {
-      $.ajax({
-        type: 'POST',
-        url: 'js_shim.php',
-        dataType: 'json',
-        data: { functionname: 'getClientSSID', arguments: [ip] },
-        success: (data) => resolve(data),
-        error: (error) => reject(error),
-      });
-    });
+    return sendShimRequest('getClientSSID', [ip]);
   }
 
   function getNetworks(targetSSID) {
+    return sendShimRequest('getAllSSIDS', [targetSSID]);
+  }
+
+  // Sends a request to the js_php shim
+  function sendShimRequest(functionName, args) {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: 'POST',
         url: 'js_shim.php',
         dataType: 'json',
-        data: { functionname: 'getAllSSIDS', arguments: [targetSSID] },
+        data: { functionname: functionName, arguments: args },
 
         success: (data) => resolve(data),
         error: (error) => reject(error),
@@ -40,18 +36,6 @@ $(function () {
       e.preventDefault();
       return window.alert('You must enter a password');
     }
-
-    // return fetch('/config', {
-    //   method: 'POST',
-    //   body: JSON.stringify({
-    //     ssid: selectedNetwork.ssid,
-    //     password,
-    //   }),
-    // }).then((res) => {
-    //   if (!res.ok) {
-    //     throw new Error('Failed to set config:', res.statusText);
-    //   }
-    // });
   }
 
   function renderIcon(rssi, auth) {
@@ -105,10 +89,6 @@ $(function () {
         el.append(ssid);
 
         el.click(() => {
-          // Remove all other active markers
-          // Array.prototype.forEach.call($list.children(), (child) => {
-          //   child.removeClass('is-active');
-          // });
           list.children().removeClass('is-active');
 
           el.addClass('is-active');
@@ -118,7 +98,6 @@ $(function () {
           // If the network doesn't require auth then hide the field
           // $password.prop(disabled, !network.auth);
           if (!network.auth) {
-            // $password.val('');
             $password.addClass('is-hidden');
           } else {
             $password.removeClass('is-hidden');
