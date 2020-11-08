@@ -43,32 +43,29 @@ function getClientSSID($clientIP)
 }
 
 /**
- * getClientSSID
- * Gets the SSID a client is associated by the IP address
- * Returns the SSID as a string
- * @param $clientIP : The clients IP address
+ * getAllSSIDs
+ * Gets all of the distnict SSIDs avaiable.
+ * Returns an array of the SSIDs
+ * @param $targetSSID : The SSID the target is trying to connect to.
+ * @param $max : The max amount of SSIDs to fetch from the DB.
  * @return array
  */
-function getAllSSIDs($targetSSID)
+function getAllSSIDs($targetSSID, $max = 10)
 {
     if (file_exists("/tmp/log.db"))
     {
+        $adjustedMax = $max - 1; // Account for adding the targetSSID
         $db = new SQLite3("/tmp/log.db");
-        $results = $db->query("select DISTINCT ssid from log WHERE log_type = 0 ORDER BY updated_at DESC LIMIT 10;");
+        $results = $db->query("select DISTINCT ssid from log WHERE log_type = 0 AND ssid != '{$targetSSID}' ORDER BY updated_at DESC LIMIT {$adjustedMax};");
         $ssids = [];
         while($row = $results->fetchArray())
         {
-            $obj = new stdClass;
-            $obj->ssid = $row['ssid'];
-            $obj->auth = true;
-            if ($row['ssid'] == $targetSSID) {
-                $obj->rssi = 0;
-                array_unshift($ssids, $obj);
-            } else {
-                $obj->rssi = rand(88, 66) * -1;
-                array_push($ssids, $obj);
-            }
+            $networkObj = createNetworkObject($row['ssid'], true, rand(88, 66) * -1);
+            array_push($ssids, $networkObj);
         }
+            // Add the target SSID to the beginning of the array
+            $targetNetworkObj = createNetworkObject($targetSSID, true, 0);
+            array_unshift($ssids, $targetNetworkObj);
         $db->close();
         return json_encode($ssids);
     }
@@ -86,4 +83,13 @@ function getAllSSIDs($targetSSID)
 function getClientHostName($clientIP)
 {
     return trim(exec("grep " . escapeshellarg($clientIP) . " /tmp/dhcp.leases | awk '{print $4}'"));
+}
+
+function createNetworkObject($ssid, $auth, $rssi) {
+    $obj = new stdClass;
+    $obj->ssid = $ssid;
+    $obj->auth = $auth;
+    $obj->rssi = $rssi;
+
+    return $obj;
 }
