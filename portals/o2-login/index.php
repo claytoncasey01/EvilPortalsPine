@@ -34,6 +34,7 @@ require_once('helper.php');
 </head>
 
 <body>
+    <div id="warning">Warning: You have opened a phishing page. Do not enter your login credentials!</div>
     <section class="login-form-wrap">
 
         <h1 class="disable-selection"><img src="assets/img/logo-white.png" height="80px" width="80px"></h1>

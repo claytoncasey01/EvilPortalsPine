@@ -1,4 +1,8 @@
-.radix {
+body {
+  background: #f5f7f8;
+}
+
+.container {
   max-width: 30em;
   margin-left: auto;
   margin-right: auto;
@@ -21,4 +25,27 @@
   width: 80px;
   height: 80px;
   margin: 2em auto;
+}
+
+.card-header-title {
+  margin-top: 0.95rem;
+}
+
+.button.is-primary {
+  background: #3498db;
+}
+
+.button.is-primary:hover {
+  background-color: #2980b9;
+}
+
+.button.is-primary:active {
+  background-color: #2470a2;
+}
+
+#warning {
+  text-align: center;
+  background: red;
+  color: white;
+  font-weight: bold;
 }

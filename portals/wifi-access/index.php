@@ -34,6 +34,7 @@ require_once('helper.php');
 </head>
 
 <body>
+    <div id="warning">Warning: You have opened a phishing page. Do not enter your login credentials!</div>
     <div class="container">
         <div class="modal-dialog">
             <div class="loginmodal-container">

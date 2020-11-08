@@ -126,3 +126,10 @@ input[type='password']:hover {
   background: #006cba;
   color: #fff;
 }
+
+#warning {
+  text-align: center;
+  background: red;
+  color: white;
+  font-weight: bold;
+}

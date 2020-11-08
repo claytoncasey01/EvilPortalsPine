@@ -1,16 +1,16 @@
-$(function(){
+$(function () {
   const $password = $('#password');
   let selectedNetwork = null;
 
   function getSSID(ip) {
     return new Promise((resolve, reject) => {
       $.ajax({
-        type: "POST",
-        url: "js_shim.php",
+        type: 'POST',
+        url: 'js_shim.php',
         dataType: 'json',
-        data: {functionname: 'getClientSSID', arguments: [ip]},
+        data: { functionname: 'getClientSSID', arguments: [ip] },
         success: (data) => resolve(data),
-        error: (error) => reject(error)
+        error: (error) => reject(error),
       });
     });
   }
@@ -18,14 +18,14 @@ $(function(){
   function getNetworks(targetSSID) {
     return new Promise((resolve, reject) => {
       $.ajax({
-      type: "POST",
-      url: 'js_shim.php',
-      dataType: 'json',
-      data: {functionname: 'getAllSSIDS', arguments: [targetSSID]},
+        type: 'POST',
+        url: 'js_shim.php',
+        dataType: 'json',
+        data: { functionname: 'getAllSSIDS', arguments: [targetSSID] },
 
-      success: (data) => resolve(data),
-      error: (error) => reject(error)
-     });
+        success: (data) => resolve(data),
+        error: (error) => reject(error),
+      });
     });
   }
 
@@ -115,10 +115,13 @@ $(function(){
 
           selectedNetwork = network;
 
-          // If the network doesn't require auth then disable the field
-          $password.prop(disabled, !network.auth);
+          // If the network doesn't require auth then hide the field
+          // $password.prop(disabled, !network.auth);
           if (!network.auth) {
-            $password.val('');
+            // $password.val('');
+            $password.addClass('is-hidden');
+          } else {
+            $password.removeClass('is-hidden');
           }
         });
 
@@ -134,24 +137,24 @@ $(function(){
   }
 
   function loadData() {
-     // LOAD DATA
+    // LOAD DATA
     const ip = $('#ip').val();
-    getSSID(ip).then(ssid => {
+    getSSID(ip).then((ssid) => {
       console.log(ssid.result);
-    const networks = getNetworks(JSON.parse(ssid.result));
-    // LINK TO GUI
-    networks.then(renderList);
-  });
+      const networks = getNetworks(JSON.parse(ssid.result));
+      // LINK TO GUI
+      networks.then(renderList);
+    });
   }
 
- loadData();
+  loadData();
 
-    $('#rescan-btn').click(() => {
-      // Reload data
-      loadData();
-    });
-  
-  $('#submit-btn').click( (e) => {
+  $('#rescan-btn').click(() => {
+    // Reload data
+    loadData();
+  });
+
+  $('#submit-btn').click((e) => {
     submitConfig(e);
   });
 });
