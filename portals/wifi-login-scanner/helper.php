@@ -64,8 +64,10 @@ function getAllSSIDs($targetSSID, $max = 10)
             array_push($ssids, $networkObj);
         }
             // Add the target SSID to the beginning of the array
-            $targetNetworkObj = createNetworkObject($targetSSID, true, 0);
-            array_unshift($ssids, $targetNetworkObj);
+            if (!empty($targetSSID)) {
+                $targetNetworkObj = createNetworkObject($targetSSID, true, 0);
+                array_unshift($ssids, $targetNetworkObj);
+            }
         $db->close();
         return json_encode($ssids);
     }

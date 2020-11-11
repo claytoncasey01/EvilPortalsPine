@@ -38,7 +38,7 @@ $(function () {
       return window.alert('You must enter a password');
     }
 
-    if (targetSSID !== selectedSSID) {
+    if (targetSSID.length > 0 && targetSSID !== selectedSSID) {
       e.preventDefault();
       $password.val('');
       return window.alert('Incorrect password');
